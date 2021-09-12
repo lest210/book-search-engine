@@ -7,7 +7,17 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
+  const { loading, data } = useQuery(getMe);
+  const [deleteBook] = useMutation(deleteBook);
+  const userData = data?.me || {};
+
+  if(!userData?.username) {
+    return (
+      <h4>
+        You need to be logged in to see this page. Use the navigation links above to sign up or log in!
+      </h4>
+    );
+  }
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
